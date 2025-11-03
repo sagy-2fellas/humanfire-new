@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -17,9 +16,10 @@ export default function NewsletterSignup() {
 
     setIsSubmitting(true);
     try {
-      await base44.entities.Newsletter.create({
-        email
-      });
+      // TODO: Replace with your preferred email service (Mailchimp, ConvertKit, etc.)
+      console.log("Newsletter signup:", email);
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
       setIsSuccess(true);
       setEmail("");
     } catch (error) {

@@ -3,7 +3,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Menu, X, ChevronDown, Linkedin, Edit } from "lucide-react";
+import { Menu, X, ChevronDown, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import {
@@ -12,34 +12,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { base44 } from "@/api/base44Client";
-
 export default function Layout({ children, currentPageName }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
-  const [currentUser, setCurrentUser] = React.useState(null);
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
   const location = useLocation();
 
   // Scroll to top on route change
   React.useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-
-  // Check if user is logged in and is admin
-  React.useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const user = await base44.auth.me();
-        setCurrentUser(user);
-        setIsAuthenticated(true);
-      } catch (error) {
-        setCurrentUser(null);
-        setIsAuthenticated(false);
-      }
-    };
-    checkUser();
-  }, []);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -68,7 +49,6 @@ export default function Layout({ children, currentPageName }) {
   ];
 
   const isActive = (path) => location.pathname === path;
-  const isAdmin = isAuthenticated && currentUser?.role === 'admin';
 
   return (
     <div className="min-h-screen bg-[#12103F] text-slate-200">
@@ -229,38 +209,6 @@ export default function Layout({ children, currentPageName }) {
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              {/* Admin Menu - Only show if user is logged in AND is admin */}
-              {isAdmin && (
-                <DropdownMenu>
-                  <DropdownMenuTrigger className={`nav-link flex items-center space-x-1 font-body text-sm font-normal transition-colors hover:text-[#B82E2B] ${
-                    isActive(createPageUrl("BlogAdmin")) || isActive(createPageUrl("BlogEditor")) || isActive(createPageUrl("AdminDashboard"))
-                      ? "text-[#B82E2B] nav-link-active"
-                      : "text-[#12103F]"
-                  }`}>
-                    <span>Admin</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-48 bg-white border-slate-200">
-                    <DropdownMenuItem asChild>
-                      <Link to={createPageUrl("BlogAdmin")} className="w-full hover:bg-[#B82E2B]/10 text-[#12103F] transition-colors font-body">
-                        Manage Blog
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link to={createPageUrl("BlogEditor")} className="w-full hover:bg-[#B82E2B]/10 text-[#12103F] transition-colors flex items-center font-body">
-                        <Edit className="w-3 h-3 mr-2" />
-                        Write New Post
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link to={createPageUrl("AdminDashboard")} className="w-full hover:bg-[#B82E2B]/10 text-[#12103F] transition-colors font-body">
-                        Dashboard
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )}
-
               <Link to={createPageUrl("BookDemo")}>
                 <Button className="fire-button text-white px-6 font-body font-normal">
                   Get in Touch
@@ -316,36 +264,6 @@ export default function Layout({ children, currentPageName }) {
               </div>
             </div>
 
-            {/* Admin Menu Mobile - Only show if user is logged in AND is admin */}
-            {isAdmin && (
-              <div className="space-y-2">
-                <div className="text-[#B82E2B] font-body font-normal">Admin</div>
-                <div className="pl-4 space-y-2">
-                  <Link
-                    to={createPageUrl("BlogAdmin")}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block text-[#12103F]/80 hover:text-[#B82E2B] text-sm transition-colors font-body"
-                  >
-                    Manage Blog
-                  </Link>
-                  <Link
-                    to={createPageUrl("BlogEditor")}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block text-[#12103F]/80 hover:text-[#B82E2B] text-sm transition-colors font-body"
-                  >
-                    Write New Post
-                  </Link>
-                  <Link
-                    to={createPageUrl("AdminDashboard")}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block text-[#12103F]/80 hover:text-[#B82E2B] text-sm transition-colors font-body"
-                  >
-                    Dashboard
-                  </Link>
-                </div>
-              </div>
-            )}
-            
             <Link to={createPageUrl("BookDemo")}>
               <Button className="w-full fire-button text-white font-body">
                 Get in Touch
