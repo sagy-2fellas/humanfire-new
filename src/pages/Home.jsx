@@ -12,7 +12,7 @@ import { createPageUrl } from "@/utils";
 
 import RotatingCubeHero from "../components/home/RotatingCubeHero";
 import StatsSection from "../components/home/StatsSection";
-import InteractiveFrameworkSection from "../components/home/InteractiveFrameworkSection";
+import InteractiveFrameworkSection from "../components/home/InteractiveFrameworksection";
 import HowWeWorkAlternative from "../components/home/HowWeWorkAlternative";
 import PrinciplesSection from "../components/about/PrinciplesSection";
 import NewsletterSignup from "../components/common/NewsletterSignup";
